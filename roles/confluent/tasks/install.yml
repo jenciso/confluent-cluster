@@ -1,0 +1,8 @@
+---
+- name: confluent | Create dir
+  file: path={{ item }} owner={{ container_uid }} group={{ container_uid }} state=directory
+  with_items:
+    - "{{ kafka_data_dir }}"
+    - "{{ kafka_log_dir }}"
+    - "{{ zookeeper_data_dir }}"
+    - "{{ zookeeper_txnlogs_dir }}"

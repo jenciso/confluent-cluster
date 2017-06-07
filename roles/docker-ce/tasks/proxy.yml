@@ -1,0 +1,9 @@
+---
+- name: docker-ce | change service config systemd
+  lineinfile: >
+    path=/usr/lib/systemd/system/docker.service
+    regexp=^Environment=
+    line='Environment="HTTP_PROXY={{ proxy_url }}" "HTTPS_PROXY={{ proxy_url }}" "NO_PROXY=localhost,127.0.0.1"'
+    insertafter=^\[Service\]
+  notify: restart docker
+    

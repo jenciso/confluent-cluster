@@ -1,0 +1,11 @@
+---
+- include: dns.yml
+
+- include: sshd.yml
+
+- include: user.yml
+
+- include: bash.yml
+
+- include: selinux.yml
+  when: selinux_enabled

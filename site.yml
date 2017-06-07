@@ -1,0 +1,11 @@
+- name: Confluent Platform
+  hosts: "confluent-cluster"
+  remote_user: ansible
+  become: true
+  roles:
+    - common
+    - init
+    - firewalld
+    - docker-ce
+    - confluent
+  environment: "{{ proxy_env }}"

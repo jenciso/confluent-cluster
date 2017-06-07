@@ -1,0 +1,3 @@
+---
+ldap_server01: pr001.domain.com.br
+ldap_server02: pr002.domain.com.br

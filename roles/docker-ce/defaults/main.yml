@@ -1,0 +1,12 @@
+---
+## DOCKER
+
+docker_version: 17.03.1
+docker_lvm_storage: yes
+docker_lvm_device: /dev/sdb
+
+## PROXY Settings
+proxy_enabled: no
+proxy_server: 192.168.0.20
+proxy_port: 8080
+proxy_url: http://{{ proxy_server }}:{{ proxy_port }}

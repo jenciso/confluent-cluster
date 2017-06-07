@@ -1,0 +1,18 @@
+---
+- include: prereq.yml
+  tags: prereq
+
+- include: install.yml
+  tags: install
+ 
+- include: zookeeper.yml
+  tags: zookeeper
+
+- include: kafka.yml
+  tags: kafka
+
+- include: schema-registry.yml
+  tags: schema-registry
+
+- include: kafka-rest.yml
+  tags: kafka-rest

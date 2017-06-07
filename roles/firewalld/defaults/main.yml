@@ -1,0 +1,9 @@
+---
+firewalld_disabled: False
+firewalld_rules:
+      ssh:
+        port: 22
+        protocol: tcp
+        state: enabled
+        zone: public
+        permanent: true

@@ -1,0 +1,24 @@
+---
+- name: Change root password
+  user:
+    name: root
+    state: present
+    password: "$6$qXycnebvEHg.ZJl1$boOZcpfalH13JYI0nEDN5TGY0poF18ZeZoKV1BO9Vq173c1tYqiQQrSrfllbQ03hxg10tWY7ZiRxGQOx.ctmQ/"
+
+- name: Change ansible password
+  user:
+    name: ansible
+    state: present
+    password: "$6$qXycnebvEHg.ZJl1$boOZcpfalH13JYI0nEDN5TGY0poF18ZeZoKV1BO9Vq173c1tYqiQQrSrfllbQ03hxg10tWY7ZiRxGQOx.ctmQ/"
+
+- name: Copy SSH Key - user ansible
+  authorized_key:
+    user: ansible
+    key: "{{ lookup('file', './id_rsa.pub') }}"
+    key_options: 'no-port-forwarding'
+
+- name: Add user ansible to sudoers
+  lineinfile:
+    dest: /etc/sudoers
+    regexp: ^ansible
+    line: "ansible ALL=(root)  NOPASSWD: ALL"

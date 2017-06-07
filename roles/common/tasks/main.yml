@@ -1,0 +1,25 @@
+---
+- name: common |  Install packages core
+  yum: name={{ item }} state=present
+  with_items:
+    - vim-enhanced
+    - net-tools
+    - bind-utils
+    - lrzsz
+    - wget
+    - lsof
+    - nfs-utils
+    - epel-release
+    - libselinux-python
+    - ntpdate
+    - tcpdump
+    - telnet
+    - setroubleshoot
+    - setools
+    - policycoreutils-python
+    - yum-utils
+    - git
+    - unzip
+    - mlocate
+  tags:
+    - common

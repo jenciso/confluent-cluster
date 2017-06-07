@@ -1,0 +1,40 @@
+---
+- name: Deny access root via sshd
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "PermitRootLogin"
+    line: "PermitRootLogin without-password"
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart sshd
+
+- name: Permit RSAAuthentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "RSAAuthentication"
+    line: "RSAAuthentication yes"
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart sshd
+
+- name: Deny GSSAPIAuthentication
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^GSSAPIAuthentication"
+    line: "GSSAPIAuthentication no"
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart sshd
+
+- name: no DNS
+  lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: "^(#)?UseDNS"
+    line: "UseDNS no"
+    owner: root
+    group: root
+    mode: 0600
+  notify: restart sshd

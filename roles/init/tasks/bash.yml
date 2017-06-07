@@ -1,0 +1,23 @@
+---
+- name: Add bashrc content
+  blockinfile:
+    dest: /etc/bashrc
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK"
+    block: |
+      export HISTTIMEFORMAT="%h/%d/%Y - %H:%M:%S "
+      export HISTSIZE='15000'
+      export HISTFILESIZE='15000'
+
+- name: Add profile
+  blockinfile:
+    dest: /etc/profile
+    insertafter: EOF
+    block: |
+      function log2syslog 
+        {
+          declare COMMAND
+          COMMAND=$(fc -ln -0)
+          logger -p local1.notice -t bash -i -- "`who am i | awk '{print $1,$5}'`:${USER}:$$:${COMMAND}"
+        }
+      trap log2syslog DEBUG

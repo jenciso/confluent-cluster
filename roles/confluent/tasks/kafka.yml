@@ -1,0 +1,29 @@
+---
+- name: confluent | Download docker kafka images
+  docker_image: name={{ item }}
+  with_items:
+    - confluentinc/cp-kafka:3.2.1
+
+
+- name: confluent | set zk_listen servers
+  set_fact:
+    zk_listen: "{% for h in groups['confluent-cluster'] %}{{ hostvars[h]['ansible_default_ipv4'].address }}:2181{% if not loop.last %},{% endif %}{% endfor %}"
+
+
+- name: confluent | Run kafka container
+  docker_container:
+    user: "{{ container_uid }}"
+    name: "kafka-{{ groups['confluent-cluster'].index(inventory_hostname) + 1 }}"
+    image: confluentinc/cp-kafka:3.2.1
+    state: started
+    restart_policy: on-failure
+    network_mode: host
+    restart: no
+    volumes:
+      - "{{ kafka_data_dir }}:{{ kafka_data_dir }}"
+      - "{{ kafka_log_dir }}:{{ kafka_log_dir }}"
+    env:
+      KAFKA_ZOOKEEPER_CONNECT: "{{ zk_listen }}"
+      KAFKA_BROKER_ID: "{{ groups['confluent-cluster'].index(inventory_hostname) + 1 }}"
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://{{ ansible_default_ipv4.address }}:9092"
+

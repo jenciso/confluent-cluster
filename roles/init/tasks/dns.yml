@@ -1,0 +1,10 @@
+---
+- name: Insert line for DNS  in /etc/resolv.conf
+  lineinfile:
+    dest: /etc/resolv.conf
+    regexp: "^{{ item.name }} {{ item.ip }}"
+    line: "{{ item.name }} {{ item.ip }}"
+    insertafter: "^search"
+  with_items:
+    - { name: 'nameserver', ip: '192.168.1.1' }
+    - { name: 'nameserver', ip: '8.8.8.8' }

@@ -1,0 +1,6 @@
+---
+selinux_enabled: True
+selinux_mode: enforcing
+selinux_policy_modules:
+  - sshd_pol_create_userdir
+  - ifconfig_custom

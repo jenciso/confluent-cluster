@@ -1,0 +1,19 @@
+---
+- name: Check package firewalld
+  yum: name=firewalld state=present
+  when: firewalld_disabled != True or firewalld_disabled is not defined
+
+- name: Enable firewalld
+  service: name=firewalld enabled=yes state=started
+  when: firewalld_disabled != True or firewalld_disabled is not defined
+
+- name: Updating firewall rules
+  firewalld: port={{ item.value.port }}/{{ item.value.protocol }} permanent={{ item.value.permanent }} state={{ item.value.state }} zone={{ item.value.zone }} immediate=True
+  with_dict: "{{ firewalld_rules }}"
+  notify: restart firewalld
+  when: firewalld_disabled != True or firewalld_disabled is not defined
+
+- name: Disabled firewalld
+  service: name=firewalld enabled=no state=stopped
+  when: firewalld_disabled 
+  ignore_errors: True

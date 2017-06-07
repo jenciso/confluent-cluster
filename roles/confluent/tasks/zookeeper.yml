@@ -1,0 +1,33 @@
+---
+- name: confluent | Download docker zookeeper images 
+  docker_image: name={{ item }}
+  with_items:
+    - confluentinc/cp-zookeeper:3.2.1
+
+
+- name: confluent | set zookeeper cluster
+  set_fact:
+    zk_cluster: "{% for h in groups['confluent-cluster'] %}{{ hostvars[h]['ansible_default_ipv4'].address }}:2888:3888{% if not loop.last %};{% endif %}{% endfor %}"
+
+
+- name: confluent | Run zookeeper container
+  docker_container:
+    user: "{{ container_uid }}"
+    name: "zk-{{ groups['confluent-cluster'].index(inventory_hostname) + 1 }}"
+    image: confluentinc/cp-zookeeper:3.2.1
+    network_mode: host
+    state: started
+    restart: no
+    restart_policy: on-failure
+    volumes:
+      - "{{ zookeeper_data_dir }}:{{ zookeeper_data_dir }}"
+      - "{{ zookeeper_txnlogs_dir }}:{{ zookeeper_txnlogs_dir }}"
+    env:
+      ZOOKEEPER_SERVER_ID: "{{ groups['confluent-cluster'].index(inventory_hostname) + 1 }}"
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+      ZOOKEEPER_INIT_LIMIT: 5
+      ZOOKEEPER_SYNC_LIMIT: 2
+      ZOOKEEPER_SERVERS: "{{ zk_cluster }}"
+
+

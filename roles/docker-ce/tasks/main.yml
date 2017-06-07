@@ -1,0 +1,33 @@
+---
+- name: docker | Installing prereq packages 
+  yum: name={{ item }} state=present
+  with_items:
+    - yum-utils 
+    - device-mapper-persistent-data
+    - lvm2
+
+
+- name: docker | Installing repo
+  yum_repository: 
+    name: docker-ce-stable
+    description: Docker CE Stable - $basearch
+    baseurl: https://download.docker.com/linux/centos/7/$basearch/stable
+    file: docker-ce
+    gpgcheck: yes
+    gpgkey: https://download.docker.com/linux/centos/gpg
+
+    
+- name: docker | Install docker-ce
+  yum: name=docker-ce-{{ docker_version }}.ce-1.el7.centos
+
+- name: docker | LVM configuration 
+  include: lvm.yml
+  when: docker_lvm_storage
+
+- name: docker | proxy configuration
+  include: proxy.yml
+  when: proxy_enabled 
+
+- name: docker | Start Service
+  systemd: name=docker state=started enabled=yes
+

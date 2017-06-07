@@ -1,0 +1,22 @@
+---
+- name: confluent | Download docker kafka-rest image
+  docker_image: name={{ item }}
+  with_items:
+    - confluentinc/cp-kafka-rest:3.2.1
+
+
+- name: confluent | Run kafka-rest 
+  docker_container:
+    user: "{{ container_uid }}"
+    name: "kafka-rest-{{ groups['confluent-cluster'].index(inventory_hostname) + 1 }}"
+    image: confluentinc/cp-kafka-rest:3.2.1
+    state: started
+    restart_policy: on-failure
+    network_mode: host
+    restart: no
+    env:
+      KAFKA_REST_ZOOKEEPER_CONNECT: "localhost:2181"
+      KAFKA_REST_HOST_NAME: "{{ ansible_default_ipv4.address }}"
+      KAFKA_REST_LISTENERS: "http://{{ ansible_default_ipv4.address }}:8082"
+      KAFKA_REST_SCHEMA_REGISTRY_URL: "http://{{ ansible_default_ipv4.address }}:8081"
+

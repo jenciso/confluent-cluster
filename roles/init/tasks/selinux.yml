@@ -1,0 +1,32 @@
+---
+- name: Install tools
+  yum: name={{ item }} state=installed
+  with_items:
+    - policycoreutils-python
+    - libselinux-python
+
+- name: Create directory selinux custom
+  file: path=/opt/selinux_custom state=directory
+
+- name: Set selinux config
+  selinux: policy=targeted state={{ selinux_mode }}
+
+- name: Copy SELinux type enforcement file
+  copy: src=selinux_policy/{{ item }}.te dest=/opt/selinux_custom/
+  with_items: "{{ selinux_policy_modules }}"
+  register: selinux_policy
+
+- name: Compile SELinux module file
+  command: checkmodule -M -m -o /opt/selinux_custom/{{ item }}.mod /opt/selinux_custom/{{ item }}.te
+  with_items: "{{ selinux_policy_modules }}"
+  when: selinux_policy.changed
+
+- name: Build SELinux policy package
+  command: semodule_package -o /opt/selinux_custom/{{ item }}.pp -m /opt/selinux_custom/{{ item }}.mod
+  with_items: "{{ selinux_policy_modules }}"
+  when: selinux_policy.changed
+
+- name: Load SELinux policy package
+  command: semodule -i /opt/selinux_custom/{{ item }}.pp
+  with_items: "{{ selinux_policy_modules }}"
+  when: selinux_policy.changed

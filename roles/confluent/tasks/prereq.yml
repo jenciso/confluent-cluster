@@ -1,0 +1,11 @@
+---
+- name: confluent | Installing java
+  yum: name=java-headless state=present
+
+- name: confluent | Installing pre packages
+  yum: name={{ item }} state=present
+  with_items:
+    - python-pip
+
+- name: confluent | installing pip packages
+  pip: name=docker-py

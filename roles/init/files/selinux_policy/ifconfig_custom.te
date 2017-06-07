@@ -1,0 +1,10 @@
+module ifconfig_custom 1.0;
+
+require {
+        type ifconfig_t;
+        type hypervkvp_device_t;
+        class chr_file { read write };
+}
+
+#============= ifconfig_t ==============
+allow ifconfig_t hypervkvp_device_t:chr_file { read write };
