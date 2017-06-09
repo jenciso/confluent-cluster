@@ -13,7 +13,7 @@
 - name: confluent | Run zookeeper container
   docker_container:
     user: "{{ container_uid }}"
-    name: "zk-{{ groups['confluent-cluster'].index(inventory_hostname) + 1 }}"
+    name: "zk"
     image: confluentinc/cp-zookeeper:3.2.1
     network_mode: host
     state: started

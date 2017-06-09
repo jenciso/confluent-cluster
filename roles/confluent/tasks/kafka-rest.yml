@@ -8,7 +8,7 @@
 - name: confluent | Run kafka-rest 
   docker_container:
     user: "{{ container_uid }}"
-    name: "kafka-rest-{{ groups['confluent-cluster'].index(inventory_hostname) + 1 }}"
+    name: "kafka-rest"
     image: confluentinc/cp-kafka-rest:3.2.1
     state: started
     restart_policy: on-failure

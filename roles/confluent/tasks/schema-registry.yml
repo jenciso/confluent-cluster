@@ -8,7 +8,7 @@
 - name: confluent | Run schema-registry 
   docker_container:
     user: "{{ container_uid }}"
-    name: "schema-registry-{{ groups['confluent-cluster'].index(inventory_hostname) + 1 }}"
+    name: "schema-registry"
     image: confluentinc/cp-schema-registry:3.2.1
     state: started
     restart_policy: on-failure
