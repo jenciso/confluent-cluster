@@ -6,14 +6,15 @@ Create a confluent cluster using Confluent community edition and Docker (yes, co
 
 ## Requirements
 
-* 3x Centos 7 servers 
-* selinux
-* firewalld
+* 3 nodes running Centos 7 
+* selinux enabled
+* firewalld enabled
+* docker-ce v.17.0.3
 * Ansible >= 2.3
 
 ## Install
 
-* Define your servers in inventory file.
+* Define your servers in your inventory file.
 
 * Run the playbook using this inventory.
 
