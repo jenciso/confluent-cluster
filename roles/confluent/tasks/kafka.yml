@@ -25,5 +25,6 @@
     env:
       KAFKA_ZOOKEEPER_CONNECT: "{{ zk_listen }}"
       KAFKA_BROKER_ID: "{{ groups['confluent-cluster'].index(inventory_hostname) + 1 }}"
-      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://{{ ansible_default_ipv4.address }}:9092"
-
+      KAFKA_ADVERTISED_LISTENERS: "PLAINTEXT://{{ ansible_fqdn }}:9092"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "{{ kafka_auto_create_topics_enable }}"
+      KAFKA_DELETE_TOPIC_ENABLE: "{{ kafka_delete_topic_enable }}"
