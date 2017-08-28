@@ -2,14 +2,14 @@
 - name: confluent | Download docker schema-registry image
   docker_image: name={{ item }}
   with_items:
-    - confluentinc/cp-schema-registry:3.2.1
+    - confluentinc/cp-schema-registry:{{ confluent_version }}
 
 
 - name: confluent | Run schema-registry 
   docker_container:
     user: "{{ container_uid }}"
     name: "schema-registry"
-    image: confluentinc/cp-schema-registry:3.2.1
+    image: confluentinc/cp-schema-registry:{{ confluent_version }}
     state: started
     restart_policy: on-failure
     network_mode: host

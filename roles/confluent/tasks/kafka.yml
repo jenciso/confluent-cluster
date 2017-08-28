@@ -2,7 +2,7 @@
 - name: confluent | Download docker kafka images
   docker_image: name={{ item }}
   with_items:
-    - confluentinc/cp-kafka:3.2.1
+    - confluentinc/cp-kafka:{{ confluent_version }}
 
 
 - name: confluent | set zk_listen servers
@@ -14,7 +14,7 @@
   docker_container:
     user: "{{ container_uid }}"
     name: "kafka"
-    image: confluentinc/cp-kafka:3.2.1
+    image: confluentinc/cp-kafka:{{ confluent_version }}
     state: started
     restart_policy: on-failure
     network_mode: host

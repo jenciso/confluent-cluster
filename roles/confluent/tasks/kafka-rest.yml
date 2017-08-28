@@ -2,14 +2,14 @@
 - name: confluent | Download docker kafka-rest image
   docker_image: name={{ item }}
   with_items:
-    - confluentinc/cp-kafka-rest:3.2.1
+    - confluentinc/cp-kafka-rest:{{ confluent_version }}
 
 
 - name: confluent | Run kafka-rest 
   docker_container:
     user: "{{ container_uid }}"
     name: "kafka-rest"
-    image: confluentinc/cp-kafka-rest:3.2.1
+    image: confluentinc/cp-kafka-rest:{{ confluent_version }}
     state: started
     restart_policy: on-failure
     network_mode: host

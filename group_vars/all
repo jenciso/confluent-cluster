@@ -13,6 +13,8 @@ proxy_env:
   no_proxy: "127.0.0.1, localhost"
 
 ## Confluent
+confluent_version: 3.3.0
+
 container_uid: 65534
 
 kafka_data_dir: /var/lib/kafka/data
