@@ -2,7 +2,7 @@
 - name: confluent | Download docker zookeeper images 
   docker_image: name={{ item }}
   with_items:
-    - confluentinc/cp-zookeeper:3.2.1
+    - confluentinc/cp-zookeeper:{{ confluent_version }}
 
 
 - name: confluent | set zookeeper cluster
@@ -14,7 +14,7 @@
   docker_container:
     user: "{{ container_uid }}"
     name: "zk"
-    image: confluentinc/cp-zookeeper:3.2.1
+    image: confluentinc/cp-zookeeper:{{ confluent_version }}
     network_mode: host
     state: started
     restart: no
